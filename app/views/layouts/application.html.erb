@@ -1,26 +1,39 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Blog</title>
-    <%= csrf_meta_tags %>
+<head>
+  <title>Blog</title>
+  <%= csrf_meta_tags %>
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-  </head>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+</head>
 
-  <body>
-    <%= link_to "Home", root_path %>
-     |
-     <%= link_to "About", about_path %>
-     |
-    <%= link_to "New Post", new_post_path %>
-      |
-     <%= link_to "Index Post", posts_path %>
-     |
-    <%= link_to "New Comment", new_comment_path %>
-      |
-     <%= link_to "Index Comment", comments_path %>
-     <hr>
-    <%= yield %>
-  </body>
+<body>
+  <%= link_to "Home", root_path %>
+  |
+  <%= link_to "About", about_path %>
+  |
+  <%= link_to "New Post", new_post_path %>
+  |
+  <%= link_to "Index Post", posts_path %>
+  |
+  <%= link_to "New Comment", new_comment_path %>
+  |
+  <%= link_to "Index Comment", comments_path %>
+  |
+    <% if user_signed_in? %>
+    Welcome <%= current_user.full_name %>!
+    <%= link_to "Sign Out", sessions_path, method: :delete %>
+    <%= link_to "Edit", edit_user_path(current_user) %>
+
+    <% else  %>
+  <%= link_to "Sign up", new_user_path %>
+    <% end %>
+  |
+  <%= link_to "Sign In", new_session_path %>
+
+  <hr>
+  <%= flash[:notice] || flash[:alert]%>
+  <%= yield %>
+</body>
 </html>
