@@ -1,6 +1,6 @@
 <h1>Edit Comment</h1>
 <%= @comment.errors.full_messages.join(", ") %>
-<%= form_for @comment do |f| %>
+<%= form_for [@post,@comment]  do |f| %>
   <div>
     <%= f.label :title %>
     <%= f.text_field :title %>
@@ -10,6 +10,6 @@
     <%= f.text_area :body %>
   </div>
 
-  <%= f.submit %>
+  <%= f.submit,'Save', post_path(@post) %>
 
 <% end %>

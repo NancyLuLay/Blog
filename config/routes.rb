@@ -5,9 +5,16 @@ Rails.application.routes.draw do
 
   get "/about" => "home#about", as: :about
 
-  resources :posts
+  namespace :api, defaults: {format: :json} do
+    namespace :v1 do
+      resources :posts, only: [:create, :index, :show]
+    end
+  end
 
-  resources :comments
+  resources :posts do
+    resources :comments, only: [:create, :edit, :update, :destroy]
+    resources :favourites, only: [:create, :destroy]
+  end
 
   resources :users, only: [:show, :new, :create, :edit, :update]
   # UPDATE USER

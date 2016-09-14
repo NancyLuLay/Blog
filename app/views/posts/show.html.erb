@@ -1,11 +1,73 @@
+<div>
+
+<h4><%= @post.user.first_name.capitalize%>'s Question</h4>
+<hr>
 <h1><%= @post.title %></h1>
 <p>
   <%= @post.body %>
 </p>
 
+<%= link_to "Edit", edit_post_path(@post), class: "btn btn-default" %>
 <%= link_to "Delete", post_path(@post),
                     method: :delete,
-                    data: {confirm: "Are you sure you want to delete this post?"}%>
+                    data: {confirm: "Are you sure you want to delete this post?"},
+                    class: "btn btn-default"%>
 
+<!-- Favourite  -->
+<% if can? :favourite, @post %>
+<% user_favourite = @post.favourite_for current_user %>
+<% if user_favourite.present? %>
+<i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
+<%= link_to "Unfavourite", post_favourite_path(@post, user_favourite),
+                            method: :delete,
+                            class: "btn btn-default" %>
+<% else %>
+<div class: "btn btn-default">
+<i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+<%= link_to "Favourite", post_favourites_path(@post),
+                          method: :post%>
+</div>
+<% end %>
+<% else %>
+<i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+Favourite
+<% end %>
+(<%= pluralize @post.favourites.count, "favourite" %>)
 
-<%= link_to "Edit", edit_post_path(@post) %>
+<hr>
+
+<!-- Comments create-->
+<h1><i class="fa fa-reply" aria-hidden="true"></i>&nbspCreate a New Comment</h1>
+<%= @comment.errors.full_messages.join(", ") %>
+<%= form_for [@post, @comment], remote: true do |f| %>
+  <div>
+    <%= f.label :title %>
+    <%= f.text_field :title %>
+  </div>
+  <div>
+    <%= f.label :body %>
+    <%= f.text_area :body %>
+  </div>
+
+  <%= f.submit%>
+
+<% end %>
+
+<hr>
+<!-- Comments show -->
+<h2>All Comments</h2>
+<div id="comments">
+<% @post.comments.each do |comm| %>
+<%# comm.user.first_name%>
+<%# comm.title %>
+<%# comm.body %>
+<%# link_to "Edit", edit_post_comment_path(@post, comm) %>
+<%# link_to "Delete", post_comment_path(@post, comm),
+                    method: :delete,
+                    data: {confirm: "Are you sure you want to delete this comment?"}%>
+<!-- <hr> -->
+<%= render "/comments/comment", comment: comm %>
+<% end %>
+</div>
+
+</div>

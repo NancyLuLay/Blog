@@ -1,4 +1,9 @@
 class User < ApplicationRecord
+  has_many :comments, dependent: :nullify
+
+  has_many :likes, dependent: :destroy
+  has_many :liked_questions, through: :likes, source: :question
+
   has_secure_password
   has_many :questions, dependent: :nullify
   VALID_EMAIL_REGEX = /\A([\w+\-]\.?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
