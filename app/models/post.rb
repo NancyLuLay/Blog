@@ -1,4 +1,6 @@
 class Post < ApplicationRecord
+  attr_accessor :tweet_it
+
   has_many :comments, dependent: :destroy
 
   has_many :favourites, dependent: :destroy

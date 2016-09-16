@@ -10,6 +10,13 @@
     <%= f.text_area :body %>
   </div>
 
+  <div>
+    <% if current_user.from_twitter? %>
+    <%= f.label :tweet_it%>
+    <%= f.check_box :tweet_it, as: :boolean  %>
+    <% end %>
+  </div>
+
   <%= f.submit %>
 
 <% end %>

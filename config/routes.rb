@@ -5,6 +5,9 @@ Rails.application.routes.draw do
 
   get "/about" => "home#about", as: :about
 
+  get '/auth/twitter', as: :sign_in_with_twitter
+  get '/auth/twitter/callback' => 'callbacks#twitter'
+
   namespace :api, defaults: {format: :json} do
     namespace :v1 do
       resources :posts, only: [:create, :index, :show]

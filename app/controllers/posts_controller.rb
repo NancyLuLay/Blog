@@ -14,6 +14,16 @@ POSTS_PER_PAGE=5
       @post.user = current_user
 
       if @post.save
+        if @post.tweet_it
+        client = Twitter::REST::Client.new do |config|
+        config.consumer_key        = ENV["TWITTER_API_KEY"]
+        config.consumer_secret     = ENV["TWITTER_API_SECRET"]
+        config.access_token        = current_user.twitter_token
+        config.access_token_secret = current_user.twitter_secret
+      end
+        client.update "#{@post.title} #{post_url(@post)}"
+      end
+
         redirect_to post_path(@post)
       else
         render :new
@@ -52,7 +62,7 @@ POSTS_PER_PAGE=5
 
     private
     def post_params
-    params.require(:post).permit(:title, :body)
+    params.require(:post).permit(:title, :body, :tweet_it)
     end
 
 end
