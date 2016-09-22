@@ -1,17 +1,62 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Blog</title>
-    <%= csrf_meta_tags %>
+<head>
+  <title>Blog</title>
+  <%= csrf_meta_tags %>
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-  </head>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <script src="https://use.fontawesome.com/49f2f34f72.js"></script>
+</head>
 
-  <body>
-    <%= link_to "Home", root_path %>
-     |
-     <%= link_to "About", about_path %>
+<body>
+  <nav class="navbar navbar-custom navbar-fixed-top">
+    <div class="container">
+      <ul class="nav navbar-nav">
+        <li><%= link_to "Home", root_path %></li>
+
+        <li><%= link_to "About", about_path %></li>
+
+        <li><%= link_to "New Post", new_post_path %></li>
+        <!-- All Posts Dropdown -->
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">All Posts <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><%= link_to "All Posts", posts_path %></a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">My Posts</a></li>
+            <li><a href="#">My comments</a></li>
+          </ul>
+        </li>
+
+        <% if user_signed_in? %>
+        <li class="w_padding"> Welcome <%= current_user.full_name %>! </li>
+        <!-- User Account Dropdown -->
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">My Account <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><%= link_to "Edit", edit_user_path(current_user) %></li>
+            <li role="separator" class="divider"></li>
+            <li><%= link_to "Sign Out", sessions_path, method: :delete %></li>
+          </ul>
+        </li>
+        <% else  %>
+
+        <li><%= link_to "Sign up", new_user_path %></li>
+        <li><%= link_to "Sign In", new_session_path %></li>
+        <li><%= link_to "Sign In with Twitter", sign_in_with_twitter_path %></li>
+        <% end %>
+
+      </ul>
+
+
+    </div>
+  </nav>
+
+  <%= flash[:notice] || flash[:alert]%>
+
+  <div class="yield">
     <%= yield %>
-  </body>
+  </div>
+</body>
 </html>

@@ -1,0 +1,10 @@
+<h1>Posts</h1>
+<% @posts.each do |post| %>
+<div>
+<%= link_to post.title, post_path(post)%>
+</div>
+
+<% end %>  
+
+
+<%= paginate @posts %>
